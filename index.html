@@ -15,62 +15,37 @@
             background-color: transparent;
         }
         .form-container {
-            max-width: 600px; /* Plus grand */
+            max-width: 400px;
             width: 100%;
             background-color: #fff;
-            padding: 40px; /* Augmenté */
-            border-radius: 12px; /* Plus doux */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            border: 6px solid #FF5722; /* Plus épais */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 5px solid #FF5722;
         }
-        .form-title { 
-            text-align: center; 
-            font-size: 2.2rem; /* Plus grand */
-            color: #FF5722; 
-            margin-bottom: 30px; 
-        }
+        .form-title { text-align: center; font-size: 1.8rem; color: #FF5722; margin-bottom: 20px; }
         .progress-container {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 30px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
         }
         .progress-circle {
-            width: 24px; height: 24px; 
-            border: 3px solid #FF5722; 
-            border-radius: 50%; 
-            background-color: #FFF;
+            width: 20px; height: 20px; border: 2px solid #FF5722; border-radius: 50%; background-color: #FFF;
         }
         .progress-circle.active { background-color: #FF5722; }
-        .progress-line { flex: 1; height: 6px; background-color: #DDD; }
+        .progress-line { flex: 1; height: 4px; background-color: #DDD; }
         .progress-line.active { background-color: #FF5722; }
         .form-step { display: none; }
         .form-step.active { display: block; }
         input {
-            width: 100%; 
-            padding: 15px; 
-            margin-bottom: 20px; 
-            border: 2px solid #ccc; 
-            border-radius: 6px; 
-            font-size: 1.2rem;
+            width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;
         }
         .form-navigation { display: flex; justify-content: space-between; }
         button {
-            padding: 12px 25px; 
-            border: none; 
-            border-radius: 6px; 
-            background-color: #4CAF50; 
-            color: white; 
-            cursor: pointer; 
-            font-size: 1.2rem;
+            padding: 10px 20px; border: none; border-radius: 4px; background-color: #4CAF50; color: white; cursor: pointer;
         }
         .prev { background-color: #ccc; }
         .submit { background-color: #2196F3; }
         .form-info {
-            font-size: 1rem; 
-            color: #666; 
-            text-align: center; 
-            margin-top: 20px;
+            font-size: 0.9rem; color: #666; text-align: center; margin-top: 10px;
         }
     </style>
 </head>
@@ -107,5 +82,77 @@
             Nous nous engageons à protéger vos coordonnées. Elles ne seront jamais partagées ou utilisées à des fins commerciales sans votre consentement. En remplissant ce formulaire, vous acceptez d’être rappelé par un conseiller. Étude sans engagement.
         </p>
     </div>
+
+    <script>
+        const steps = document.querySelectorAll(".form-step");
+        const circles = document.querySelectorAll(".progress-circle");
+        const lines = document.querySelectorAll(".progress-line");
+        const prevButton = document.querySelector(".prev");
+        const nextButton = document.querySelector(".next");
+        const submitButton = document.querySelector(".submit");
+        let currentStep = 0;
+
+        function updateForm() {
+            steps.forEach((step, index) => step.classList.toggle("active", index === currentStep));
+            circles.forEach((circle, index) => circle.classList.toggle("active", index <= currentStep));
+            lines.forEach((line, index) => line.classList.toggle("active", index < currentStep));
+            prevButton.disabled = currentStep === 0;
+            nextButton.style.display = currentStep === steps.length - 1 ? "none" : "inline-block";
+            submitButton.style.display = currentStep === steps.length - 1 ? "inline-block" : "none";
+        }
+
+        nextButton.addEventListener("click", () => {
+            const input = steps[currentStep].querySelector("input");
+            if (!input.value) {
+                input.classList.add("error");
+                input.placeholder = "Obligatoire";
+            } else {
+                input.classList.remove("error");
+                currentStep++;
+                updateForm();
+            }
+        });
+
+        prevButton.addEventListener("click", () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateForm();
+            }
+        });
+
+        // Formatage dynamique pour le champ téléphone
+        document.getElementById("phone").addEventListener("input", (e) => {
+            let value = e.target.value.replace(/\D/g, "");
+            e.target.value = value.match(/.{1,2}/g)?.join(" ") || "";
+        });
+
+        // Envoi des données vers Google Sheets
+        document.getElementById("stepForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = {
+                nom: document.getElementById("name").value,
+                prenom: document.getElementById("firstName").value,
+                codepostal: document.getElementById("postalCode").value,
+                ville: document.getElementById("city").value,
+                tel: document.getElementById("phone").value,
+                email: document.getElementById("email").value,
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbwVSYGLqMKtUxhmjFwXbVInEWQlXF50EKYHz3RHtyJC-k_NLTeEWx-hrsIsdr84tt6Y/exec", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                mode: "no-cors",
+                body: JSON.stringify(formData),
+            })
+            .then(() => alert("Formulaire soumis avec succès !"))
+            .catch((error) => {
+                console.error("Erreur lors de la soumission :", error);
+                alert("Erreur lors de la soumission du formulaire.");
+            });
+        });
+
+        updateForm();
+    </script>
 </body>
 </html>
