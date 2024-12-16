@@ -18,46 +18,47 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
         }
 
         .form-container {
-            width: 100%; /* Prend toute la largeur du conteneur parent */
-            max-width: 600px; /* Limite la largeur maximale */
-            padding: 5%; /* Espacement proportionnel */
-            aspect-ratio: 3 / 4; /* Maintient un ratio largeur/hauteur constant */
+            width: 100%; /* Prend toute la largeur disponible */
+            max-width: 700px; /* Largeur maximale pour le formulaire */
+            min-height: 500px; /* Hauteur minimale pour éviter qu'il soit trop petit */
+            padding: 3vw; /* Espacement proportionnel à l'écran */
             background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: 5px solid #FF5722;
+            border-radius: 1vw;
+            box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.1);
+            border: 0.5vw solid #FF5722;
         }
 
         .form-title {
-            font-size: 1.8vw; /* Taille proportionnelle à la largeur de l'écran */
+            font-size: 2vw; /* Taille proportionnelle à la largeur */
             color: #FF5722;
             text-align: center;
-            margin-bottom: 2%;
+            margin-bottom: 1.5vw;
         }
 
         input {
             width: 100%;
-            padding: 1.5vw; /* Proportionnel */
+            padding: 1.5vw; /* Taille proportionnelle */
             margin-bottom: 1.5vw;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1.2vw; /* Taille proportionnelle */
+            border: 0.2vw solid #ccc;
+            border-radius: 0.5vw;
+            font-size: 1.2vw;
         }
 
         .progress-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2%;
+            margin-bottom: 2vw;
         }
 
         .progress-circle {
-            width: 1.8vw;
-            height: 1.8vw;
-            border: 0.2vw solid #FF5722;
+            width: 2vw;
+            height: 2vw;
+            border: 0.3vw solid #FF5722;
             border-radius: 50%;
             background-color: #FFF;
         }
@@ -68,7 +69,7 @@
 
         .progress-line {
             flex: 1;
-            height: 0.3vw;
+            height: 0.4vw;
             background-color: #DDD;
         }
 
@@ -76,22 +77,14 @@
             background-color: #FF5722;
         }
 
-        .form-step {
-            display: none;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
         button {
-            padding: 1vw 2vw; /* Proportionnel */
+            padding: 1vw 2vw; /* Boutons proportionnels */
             border: none;
             border-radius: 0.5vw;
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
-            font-size: 1.2vw; /* Proportionnel */
+            font-size: 1.2vw;
         }
 
         .prev {
@@ -103,10 +96,10 @@
         }
 
         .form-info {
-            font-size: 1vw; /* Proportionnel */
+            font-size: 1vw; /* Texte d'information proportionnel */
             color: #666;
             text-align: center;
-            margin-top: 2%;
+            margin-top: 1.5vw;
         }
     </style>
 </head>
@@ -131,9 +124,7 @@
             <div class="form-step"><input id="firstName" type="text" placeholder="Prénom" required></div>
             <div class="form-step"><input id="postalCode" type="text" placeholder="Code postal" required></div>
             <div class="form-step"><input id="city" type="text" placeholder="Ville" required></div>
-            <div class="form-step">
-                <input id="phone" type="tel" placeholder="00 00 00 00 00" maxlength="14" required>
-            </div>
+            <div class="form-step"><input id="phone" type="tel" placeholder="00 00 00 00 00" maxlength="14" required></div>
             <div class="form-step"><input id="email" type="email" placeholder="Email" required></div>
             <div class="form-navigation">
                 <button type="button" class="prev" disabled>Précédent</button>
@@ -153,7 +144,6 @@
         const prevButton = document.querySelector(".prev");
         const nextButton = document.querySelector(".next");
         const submitButton = document.querySelector(".submit");
-        const telInput = document.getElementById("phone");
         let currentStep = 0;
 
         function updateForm() {
@@ -184,34 +174,9 @@
             }
         });
 
-        telInput.addEventListener("input", (e) => {
+        document.getElementById("phone").addEventListener("input", (e) => {
             let value = e.target.value.replace(/\D/g, "");
             e.target.value = value.match(/.{1,2}/g)?.join(" ") || "";
-        });
-
-        document.getElementById("stepForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const formData = {
-                nom: document.getElementById("name").value,
-                prenom: document.getElementById("firstName").value,
-                codepostal: document.getElementById("postalCode").value,
-                ville: document.getElementById("city").value,
-                tel: document.getElementById("phone").value,
-                email: document.getElementById("email").value,
-            };
-
-            fetch("https://script.google.com/macros/s/AKfycbwVSYGLqMKtUxhmjFwXbVInEWQlXF50EKYHz3RHtyJC-k_NLTeEWx-hrsIsdr84tt6Y/exec", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                mode: "no-cors",
-                body: JSON.stringify(formData),
-            })
-            .then(() => alert("Formulaire soumis avec succès !"))
-            .catch((error) => {
-                console.error("Erreur lors de la soumission :", error);
-                alert("Erreur lors de la soumission du formulaire.");
-            });
         });
 
         updateForm();
