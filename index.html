@@ -23,8 +23,8 @@
         .form-container {
             width: 100%; /* Prend toute la largeur du conteneur parent */
             max-width: 600px; /* Limite la largeur maximale */
-            margin: 0 auto; /* Centre le formulaire dans le conteneur */
             padding: 5%; /* Espacement proportionnel */
+            aspect-ratio: 3 / 4; /* Maintient un ratio largeur/hauteur constant */
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -32,32 +32,32 @@
         }
 
         .form-title {
-            font-size: 1.8rem;
+            font-size: 1.8vw; /* Taille proportionnelle à la largeur de l'écran */
             color: #FF5722;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 2%;
         }
 
         input {
-            width: 100%; /* Les champs s'adaptent à la largeur */
-            padding: 10px;
-            margin-bottom: 15px;
+            width: 100%;
+            padding: 1.5vw; /* Proportionnel */
+            margin-bottom: 1.5vw;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 1rem;
+            font-size: 1.2vw; /* Taille proportionnelle */
         }
 
         .progress-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 2%;
         }
 
         .progress-circle {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #FF5722;
+            width: 1.8vw;
+            height: 1.8vw;
+            border: 0.2vw solid #FF5722;
             border-radius: 50%;
             background-color: #FFF;
         }
@@ -68,7 +68,7 @@
 
         .progress-line {
             flex: 1;
-            height: 4px;
+            height: 0.3vw;
             background-color: #DDD;
         }
 
@@ -85,12 +85,13 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 1vw 2vw; /* Proportionnel */
             border: none;
-            border-radius: 4px;
+            border-radius: 0.5vw;
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
+            font-size: 1.2vw; /* Proportionnel */
         }
 
         .prev {
@@ -102,10 +103,10 @@
         }
 
         .form-info {
-            font-size: 0.9rem;
+            font-size: 1vw; /* Proportionnel */
             color: #666;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 2%;
         }
     </style>
 </head>
