@@ -3,123 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Formulaire étape par étape">
     <title>Formulaire Étape par Étape</title>
     <style>
-        /* Réinitialisation des marges et du fond */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Corps de la page avec fond transparent */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Arial', sans-serif;
-            background-color: transparent; /* Fond transparent */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: transparent;
         }
-
-        /* Conteneur principal du formulaire */
         .form-container {
-            width: 100%;
             max-width: 400px;
-            background-color: #fff; /* Fond blanc du formulaire */
+            width: 100%;
+            background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: 2px solid #FF5722;
+            border: 5px solid #FF5722;
         }
-
-        /* Titre du formulaire */
-        .form-title {
-            text-align: center;
-            font-size: 1.8rem;
-            color: #FF5722;
-            margin-bottom: 20px;
-        }
-
-        /* Barre de progression */
+        .form-title { text-align: center; font-size: 1.8rem; color: #FF5722; margin-bottom: 20px; }
         .progress-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
         }
-
         .progress-circle {
-            width: 20px;
-            height: 20px;
-            background-color: #FFF;
-            border: 2px solid #FF5722;
-            border-radius: 50%;
+            width: 20px; height: 20px; border: 2px solid #FF5722; border-radius: 50%; background-color: #FFF;
         }
-
-        .progress-circle.active {
-            background-color: #FF5722;
-        }
-
-        .progress-line {
-            flex: 1;
-            height: 2px;
-            background-color: #DDD;
-            margin: 0 5px;
-        }
-
-        .progress-line.active {
-            background-color: #FF5722;
-        }
-
-        /* Étapes du formulaire */
-        .form-step {
-            display: none;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
-        /* Champs d'entrée */
+        .progress-circle.active { background-color: #FF5722; }
+        .progress-line { flex: 1; height: 4px; background-color: #DDD; }
+        .progress-line.active { background-color: #FF5722; }
+        .form-step { display: none; }
+        .form-step.active { display: block; }
         input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;
         }
-
-        /* Boutons de navigation */
-        .form-navigation {
-            display: flex;
-            justify-content: space-between;
-        }
-
+        .form-navigation { display: flex; justify-content: space-between; }
         button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            font-size: 1rem;
+            padding: 10px 20px; border: none; border-radius: 4px; background-color: #4CAF50; color: white; cursor: pointer;
         }
-
-        .prev {
-            background-color: #ccc;
-        }
-
-        .submit {
-            background-color: #2196F3;
-        }
-
-        /* Texte informatif */
+        .prev { background-color: #ccc; }
+        .submit { background-color: #2196F3; }
         .form-info {
-            font-size: 0.9rem;
-            color: #666;
-            text-align: center;
-            margin-top: 10px;
+            font-size: 0.9rem; color: #666; text-align: center; margin-top: 10px;
         }
     </style>
 </head>
@@ -136,14 +62,16 @@
             <div class="progress-circle"></div>
             <div class="progress-line"></div>
             <div class="progress-circle"></div>
+            <div class="progress-line"></div>
+            <div class="progress-circle"></div>
         </div>
         <form id="stepForm">
-            <div class="form-step active"><input type="text" placeholder="Nom" required></div>
-            <div class="form-step"><input type="text" placeholder="Prénom" required></div>
-            <div class="form-step"><input type="text" placeholder="Code postal" required></div>
-            <div class="form-step"><input type="text" placeholder="Ville" required></div>
-            <div class="form-step"><input type="tel" placeholder="Téléphone" required></div>
-            <div class="form-step"><input type="email" placeholder="Email" required></div>
+            <div class="form-step active"><input id="name" type="text" placeholder="Nom" required></div>
+            <div class="form-step"><input id="firstName" type="text" placeholder="Prénom" required></div>
+            <div class="form-step"><input id="postalCode" type="text" placeholder="Code postal" required></div>
+            <div class="form-step"><input id="city" type="text" placeholder="Ville" required></div>
+            <div class="form-step"><input id="phone" type="tel" placeholder="00 00 00 00 00" maxlength="14" required></div>
+            <div class="form-step"><input id="email" type="email" placeholder="Email" required></div>
             <div class="form-navigation">
                 <button type="button" class="prev" disabled>Précédent</button>
                 <button type="button" class="next">Suivant</button>
@@ -174,7 +102,12 @@
         }
 
         nextButton.addEventListener("click", () => {
-            if (currentStep < steps.length - 1) {
+            const input = steps[currentStep].querySelector("input");
+            if (!input.value) {
+                input.classList.add("error");
+                input.placeholder = "Obligatoire";
+            } else {
+                input.classList.remove("error");
                 currentStep++;
                 updateForm();
             }
@@ -185,6 +118,38 @@
                 currentStep--;
                 updateForm();
             }
+        });
+
+        // Formatage dynamique pour le champ téléphone
+        document.getElementById("phone").addEventListener("input", (e) => {
+            let value = e.target.value.replace(/\D/g, "");
+            e.target.value = value.match(/.{1,2}/g)?.join(" ") || "";
+        });
+
+        // Envoi des données vers Google Sheets
+        document.getElementById("stepForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = {
+                nom: document.getElementById("name").value,
+                prenom: document.getElementById("firstName").value,
+                codepostal: document.getElementById("postalCode").value,
+                ville: document.getElementById("city").value,
+                tel: document.getElementById("phone").value,
+                email: document.getElementById("email").value,
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbwVSYGLqMKtUxhmjFwXbVInEWQlXF50EKYHz3RHtyJC-k_NLTeEWx-hrsIsdr84tt6Y/exec", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                mode: "no-cors",
+                body: JSON.stringify(formData),
+            })
+            .then(() => alert("Formulaire soumis avec succès !"))
+            .catch((error) => {
+                console.error("Erreur lors de la soumission :", error);
+                alert("Erreur lors de la soumission du formulaire.");
+            });
         });
 
         updateForm();
