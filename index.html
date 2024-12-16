@@ -5,47 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire Étape par Étape</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
+            background-color: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: transparent;
         }
+
         .form-container {
-            max-width: 400px;
-            width: 100%;
+            width: 100%; /* Le formulaire prend toute la largeur du conteneur */
+            max-width: none; /* Pas de limite fixe sur la largeur */
+            padding: 5%; /* Padding proportionnel */
             background-color: #fff;
-            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border: 5px solid #FF5722;
         }
-        .form-title { text-align: center; font-size: 1.8rem; color: #FF5722; margin-bottom: 20px; }
-        .progress-container {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+
+        .form-title {
+            font-size: 1.8rem; /* Taille ajustable du titre */
+            color: #FF5722;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .progress-circle {
-            width: 20px; height: 20px; border: 2px solid #FF5722; border-radius: 50%; background-color: #FFF;
-        }
-        .progress-circle.active { background-color: #FF5722; }
-        .progress-line { flex: 1; height: 4px; background-color: #DDD; }
-        .progress-line.active { background-color: #FF5722; }
-        .form-step { display: none; }
-        .form-step.active { display: block; }
+
         input {
-            width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem;
+            width: 100%; /* Les champs occupent toute la largeur */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
         }
-        .form-navigation { display: flex; justify-content: space-between; }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #FF5722;
+            border-radius: 50%;
+            background-color: #FFF;
+        }
+
+        .progress-circle.active {
+            background-color: #FF5722;
+        }
+
+        .progress-line {
+            flex: 1;
+            height: 4px;
+            background-color: #DDD;
+        }
+
+        .progress-line.active {
+            background-color: #FF5722;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
         button {
-            padding: 10px 20px; border: none; border-radius: 4px; background-color: #4CAF50; color: white; cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
         }
-        .prev { background-color: #ccc; }
-        .submit { background-color: #2196F3; }
+
+        .prev {
+            background-color: #ccc;
+        }
+
+        .submit {
+            background-color: #2196F3;
+        }
+
         .form-info {
-            font-size: 0.9rem; color: #666; text-align: center; margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -70,7 +129,9 @@
             <div class="form-step"><input id="firstName" type="text" placeholder="Prénom" required></div>
             <div class="form-step"><input id="postalCode" type="text" placeholder="Code postal" required></div>
             <div class="form-step"><input id="city" type="text" placeholder="Ville" required></div>
-            <div class="form-step"><input id="phone" type="tel" placeholder="00 00 00 00 00" maxlength="14" required></div>
+            <div class="form-step">
+                <input id="phone" type="tel" placeholder="00 00 00 00 00" maxlength="14" required>
+            </div>
             <div class="form-step"><input id="email" type="email" placeholder="Email" required></div>
             <div class="form-navigation">
                 <button type="button" class="prev" disabled>Précédent</button>
@@ -90,6 +151,7 @@
         const prevButton = document.querySelector(".prev");
         const nextButton = document.querySelector(".next");
         const submitButton = document.querySelector(".submit");
+        const telInput = document.getElementById("phone");
         let currentStep = 0;
 
         function updateForm() {
@@ -120,13 +182,11 @@
             }
         });
 
-        // Formatage dynamique pour le champ téléphone
-        document.getElementById("phone").addEventListener("input", (e) => {
+        telInput.addEventListener("input", (e) => {
             let value = e.target.value.replace(/\D/g, "");
             e.target.value = value.match(/.{1,2}/g)?.join(" ") || "";
         });
 
-        // Envoi des données vers Google Sheets
         document.getElementById("stepForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
