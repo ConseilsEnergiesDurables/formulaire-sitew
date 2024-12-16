@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Step-by-step form with circular progress bar">
+    <title>Step-by-Step Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 4px solid #FF5722;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FF5722;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-circle {
+            width: 20px;
+            height: 20px;
+            background-color: #FFF;
+            border: 2px solid #FF5722;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .progress-circle.active {
+            background-color: #FF5722;
+            transform: scale(1.2);
+        }
+
+        .progress-line {
+            flex: 1;
+            height: 2px;
+            background-color: #DDD;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .progress-line.active {
+            background-color: #FF5722;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .form-step label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .form-step input {
+            width: 90%;
+            padding: 10px;
+            margin: 0 auto 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        input::placeholder {
+            text-align: left;
+            color: #aaa;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .form-navigation button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-navigation .prev {
+            background-color: #ccc;
+        }
+
+        .form-navigation .next {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .form-navigation .submit {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .form-info {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2 class="form-title">Demande d'information</h2>
+        <div class="progress-container">
+            <div class="progress-circle active" id="circle-1"></div>
+            <div class="progress-line" id="line-1"></div>
+            <div class="progress-circle" id="circle-2"></div>
+            <div class="progress-line" id="line-2"></div>
+            <div class="progress-circle" id="circle-3"></div>
+            <div class="progress-line" id="line-3"></div>
+            <div class="progress-circle" id="circle-4"></div>
+            <div class="progress-line" id="line-4"></div>
+            <div class="progress-circle" id="circle-5"></div>
+            <div class="progress-line" id="line-5"></div>
+            <div class="progress-circle" id="circle-6"></div>
+        </div>
+        <form id="stepForm">
+            <div class="form-step active">
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" placeholder="Votre nom" required>
+            </div>
+            <div class="form-step">
+                <label for="firstName">Prénom</label>
+                <input type="text" id="firstName" name="firstName" placeholder="Votre prénom" required>
+            </div>
+            <div class="form-step">
+                <label for="postalCode">Code postal</label>
+                <input type="text" id="postalCode" name="postalCode" placeholder="Votre code postal" required>
+            </div>
+            <div class="form-step">
+                <label for="city">Ville</label>
+                <input type="text" id="city" name="city" placeholder="Votre ville" required>
+            </div>
+            <div class="form-step">
+                <label for="phone">Téléphone</label>
+                <input type="tel" id="phone" name="phone" placeholder="Votre numéro de téléphone" required>
+            </div>
+            <div class="form-step">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Votre email" required>
+            </div>
+            <div class="form-navigation">
+                <button type="button" class="prev" disabled>Précédent</button>
+                <button type="button" class="next">Suivant</button>
+                <button type="submit" class="submit" style="display: none;">Soumettre</button>
+            </div>
+        </form>
+        <p class="form-info">Nous nous engageons à protéger vos coordonnées. Elles ne seront jamais partagées ou utilisées à des fins commerciales sans votre consentement. En remplissant ce formulaire, vous acceptez d’être rappelé par un conseiller. Étude sans engagement.</p>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll(".form-step");
+        const circles = document.querySelectorAll(".progress-circle");
+        const lines = document.querySelectorAll(".progress-line");
+        const nextButton = document.querySelector(".next");
+        const prevButton = document.querySelector(".prev");
+        const submitButton = document.querySelector(".submit");
+        let currentStep = 0;
+
+        function updateForm() {
+            steps.forEach((step, index) => {
+                step.classList.toggle("active", index === currentStep);
+            });
+
+            circles.forEach((circle, index) => {
+                circle.classList.toggle("active", index <= currentStep);
+            });
+
+            lines.forEach((line, index) => {
+                line.classList.toggle("active", index < currentStep);
+            });
+
+            prevButton.disabled = currentStep === 0;
+            nextButton.style.display = currentStep === steps.length - 1 ? "none" : "inline-block";
+            submitButton.style.display = currentStep === steps.length - 1 ? "inline-block" : "none";
+        }
+
+        nextButton.addEventListener("click", () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateForm();
+            }
+        });
+
+        prevButton.addEventListener("click", () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateForm();
+            }
+        });
+
+        document.getElementById("stepForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Empêche le comportement par défaut
+
+            // Récupère les valeurs du formulaire
+            const formData = {
+                nom: document.getElementById("name").value,
+                prenom: document.getElementById("firstName").value,
+                codepostal: document.getElementById("postalCode").value,
+                ville: document.getElementById("city").value,
+                tel: document.getElementById("phone").value,
+                email: document.getElementById("email").value
+            };
+
+            // Log des données du formulaire pour vérifier
+            console.log("FormData:", formData);
+
+            // Envoie les données sous forme de requête POST au script Apps Script
+            fetch("https://script.google.com/macros/s/AKfycbwVSYGLqMKtUxhmjFwXbVInEWQlXF50EKYHz3RHtyJC-k_NLTeEWx-hrsIsdr84tt6Y/exec", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                mode: "no-cors",
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Réponse du serveur:", data);
+                alert("Formulaire soumis avec succès !");
+            })
+            .catch(error => {
+                console.error("Erreur lors de la soumission :", error);
+                alert("Erreur lors de la soumission du formulaire.");
+            });
+        });
+
+        updateForm();
+    </script>
+</body>
+</html>
