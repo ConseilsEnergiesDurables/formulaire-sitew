@@ -21,9 +21,10 @@
         }
 
         .form-container {
-            width: 100%; /* Le formulaire prend toute la largeur du conteneur */
-            max-width: none; /* Pas de limite fixe sur la largeur */
-            padding: 5%; /* Padding proportionnel */
+            width: 100%; /* Prend toute la largeur du conteneur parent */
+            max-width: 600px; /* Limite la largeur maximale */
+            margin: 0 auto; /* Centre le formulaire dans le conteneur */
+            padding: 5%; /* Espacement proportionnel */
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -31,14 +32,14 @@
         }
 
         .form-title {
-            font-size: 1.8rem; /* Taille ajustable du titre */
+            font-size: 1.8rem;
             color: #FF5722;
             text-align: center;
             margin-bottom: 20px;
         }
 
         input {
-            width: 100%; /* Les champs occupent toute la largeur */
+            width: 100%; /* Les champs s'adaptent à la largeur */
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
