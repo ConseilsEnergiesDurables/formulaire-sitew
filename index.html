@@ -65,7 +65,7 @@
             <div class="progress-line"></div>
             <div class="progress-circle"></div>
         </div>
-        <form id="stepForm">
+        <form id="stepForm" onsubmit="parent.dataLayer.push({'event': 'formSubmit'});">
             <div class="form-step active"><input id="name" type="text" placeholder="Nom" required></div>
             <div class="form-step"><input id="firstName" type="text" placeholder="Prénom" required></div>
             <div class="form-step"><input id="postalCode" type="text" placeholder="Code postal" required></div>
