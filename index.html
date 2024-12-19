@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire Étape par Étape</title>
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-P23ZBF3T' + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-P23ZBF3T');
+    </script>
+    <!-- End Google Tag Manager -->
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -50,14 +65,17 @@
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P23ZBF3T"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div class="form-container">
         <h2 class="form-title">Demande d'étude</h2>
         <div class="progress-container">
             <div class="progress-circle active"></div>
-            <div class="progress-line"></div>
-            <div class="progress-circle"></div>
-            <div class="progress-line"></div>
-            <div class="progress-circle"></div>
             <div class="progress-line"></div>
             <div class="progress-circle"></div>
             <div class="progress-line"></div>
@@ -120,13 +138,6 @@
             }
         });
 
-        // Formatage dynamique pour le champ téléphone
-        document.getElementById("phone").addEventListener("input", (e) => {
-            let value = e.target.value.replace(/\D/g, "");
-            e.target.value = value.match(/.{1,2}/g)?.join(" ") || "";
-        });
-
-        // Envoi des données vers Google Sheets
         document.getElementById("stepForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
