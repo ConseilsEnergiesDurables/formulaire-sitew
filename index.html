@@ -48,8 +48,28 @@
             font-size: 0.9rem; color: #666; text-align: center; margin-top: 10px;
         }
     </style>
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-XXXXXXX' + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-XXXXXXX');
+    </script>
+    <!-- End Google Tag Manager -->
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div class="form-container">
         <h2 class="form-title">Demande d'information</h2>
         <div class="progress-container">
@@ -65,7 +85,7 @@
             <div class="progress-line"></div>
             <div class="progress-circle"></div>
         </div>
-        <form id="stepForm">
+        <form id="stepForm" onsubmit="dataLayer.push({'event': 'formSubmit'});">
             <div class="form-step active"><input id="name" type="text" placeholder="Nom" required></div>
             <div class="form-step"><input id="firstName" type="text" placeholder="Prénom" required></div>
             <div class="form-step"><input id="postalCode" type="text" placeholder="Code postal" required></div>
